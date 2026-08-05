@@ -16,13 +16,15 @@ const UserContext = createContext<UserContextType>({
     refetchUser: () => {},
 });
 
+const apiBaseUrl = import.meta.env.VITE_API_BASE || 'http://localhost:3000/chatApp';
+
 export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<TypeUser | null>(null);
     const [loading, setLoading] = useState(true);
 
     const fetchUser = () => {
         setLoading(true);
-        axios.post(`${import.meta.env.VITE_API_BASE}/auth/validate`, {}, { withCredentials: true })
+        axios.post(`${apiBaseUrl}/auth/validate`, {}, { withCredentials: true })
             .then(res => {
                 if (res.data?.user) setUser(res.data.user);
                 else setUser(null);

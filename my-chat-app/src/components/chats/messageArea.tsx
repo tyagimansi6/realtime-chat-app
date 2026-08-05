@@ -8,7 +8,7 @@ import FileUploadComponent from "./fileUpload.tsx";
 import { type FileWithPath, useDropzone } from "react-dropzone";
 import Message from "./message.tsx";
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE;
+const apiBaseUrl = import.meta.env.VITE_API_BASE || 'http://localhost:3000/chatApp';
 
 type MessageAreaProps = {
     messages: TypeMessage[];

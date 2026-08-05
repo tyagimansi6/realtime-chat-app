@@ -1,6 +1,10 @@
+const path = require('path');
+const dotenv = require("dotenv");
+// Load chatApp env before any module reads process.env (e.g. JWT_SECRET)
+dotenv.config({ path: path.join(__dirname, 'projects/chatApp/.env') });
+
 const express = require('express');
 const cors = require('cors');
-const dotenv = require("dotenv");
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const { createServer } = require("node:http");
@@ -11,8 +15,6 @@ const connectDBChat = require('./projects/chatApp/config/db.js');
 const connectDBSolarium = require('./projects/solarium/config/db.js');
 const initializeChatSocket = require("./projects/chatApp/middlewares/socketHandler");
 const initializeSolariumSocket = require("./projects/solarium/middlewares/socketHandler");
-
-dotenv.config();
 
 const app = express();
 const server = createServer(app);

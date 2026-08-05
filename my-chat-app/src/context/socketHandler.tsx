@@ -14,7 +14,8 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     useEffect(() => {
         if (!userId) return;
 
-        const newSocket = io(import.meta.env.VITE_API_BASE.replace(/\/chatApp\/?$/, ""), {
+        const apiBaseUrl = import.meta.env.VITE_API_BASE || 'http://localhost:3000/chatApp';
+        const newSocket = io(apiBaseUrl.replace(/\/chatApp\/?$/, ""), {
             path: "/chatApp/socket.io",
         });
 

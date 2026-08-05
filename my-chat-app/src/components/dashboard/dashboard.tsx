@@ -13,7 +13,7 @@ import type {Chat as TypeChat, Message as TypeMessage, User as TypeUser} from ".
 import MessageInput from "../chats/messageInput.tsx";
 import {useSocket} from "../../context/socketHandler.tsx";
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE;
+const apiBaseUrl = import.meta.env.VITE_API_BASE || 'http://localhost:3000/chatApp';
 const notificationSound = new Audio('/notification.mp3');
 
 const UserAvatar = ({name, isOnline, size = 'w-11 h-11'}: { name?: string, isOnline?: boolean, size?: string }) => {
@@ -596,7 +596,6 @@ function Dashboard() {
                 />
             )}
             <footer className="text-center text-sm text-slate-500 py-2 bg-white border-t border-slate-200">
-                Developed By Sumit Kumar Saw
             </footer>
         </div>
     );

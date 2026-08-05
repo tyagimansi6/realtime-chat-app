@@ -1,0 +1,93 @@
+// routeApi.js
+const express = require('express');
+const fs = require('fs');
+const { execSync } = require('child_process');
+
+const router = express.Router();
+
+const CONFIG_FILE = './routes.json';
+const AUTH_TOKEN = 'hardcoded-secret-token';
+
+// Auth middleware
+function authenticate(req, res, next) {
+    const token = req.headers['authorization'];
+    if (token === `Bearer ${AUTH_TOKEN}`) return next();
+    return res.status(403).json({ error: 'Forbidden' });
+}
+
+// Read routes from file
+function loadRoutes() {
+    if (fs.existsSync(CONFIG_FILE)) return JSON.parse(fs.readFileSync(CONFIG_FILE));
+    return [];
+}
+
+// Save routes to file
+function saveRoutes(routes) {
+    fs.writeFileSync(CONFIG_FILE, JSON.stringify(routes, null, 2));
+}
+
+// Generate and reload NGINX config
+function writeNginxConfig(routes) {
+    let config = '';
+    routes.forEach(route => {
+        config += `
+server {
+    listen 80;
+    server_name ${route.domain};
+
+    location / {
+        proxy_pass http://localhost:${route.port};
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+`;
+    });
+    fs.writeFileSync('/etc/nginx/conf.d/custom_routes.conf', config);
+    execSync('sudo nginx -s reload');
+}
+
+// API endpoints
+router.get('/routes', authenticate, (req, res) => {
+    res.json(loadRoutes());
+});
+
+router.post('/routes', authenticate, (req, res) => {
+    const { domain, port } = req.body;
+    let routes = loadRoutes();
+    if (routes.find(r => r.domain === domain)) {
+        return res.status(400).json({ error: 'Domain exists' });
+    }
+    routes.push({ domain, port });
+    saveRoutes(routes);
+    writeNginxConfig(routes);
+    res.json({ message: 'Route added.' });
+});
+
+router.put('/routes/:domain', authenticate, (req, res) => {
+    const { domain } = req.params;
+    const { port } = req.body;
+    let routes = loadRoutes();
+    const route = routes.find(r => r.domain === domain);
+    if (!route) {
+        return res.status(404).json({ error: 'Route not found' });
+    }
+    route.port = port;
+    saveRoutes(routes);
+    writeNginxConfig(routes);
+    res.json({ message: 'Route updated.' });
+});
+
+router.delete('/routes/:domain', authenticate, (req, res) => {
+    const { domain } = req.params;
+    let routes = loadRoutes();
+    const filtered = routes.filter(r => r.domain !== domain);
+    if (filtered.length === routes.length) {
+        return res.status(404).json({ error: 'Route not found' });
+    }
+    saveRoutes(filtered);
+    writeNginxConfig(filtered);
+    res.json({ message: 'Route deleted.' });
+});
+
+module.exports = router;

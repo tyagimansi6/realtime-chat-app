@@ -12,8 +12,8 @@ import VideoCall from "../chats/VideoCall.tsx";
 import type {Chat as TypeChat, Message as TypeMessage, User as TypeUser} from "../chats/types.tsx";
 import MessageInput from "../chats/messageInput.tsx";
 import {useSocket} from "../../context/socketHandler.tsx";
+import { apiBaseUrl } from "../../config/api";
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE || 'http://localhost:3000/chatApp';
 const notificationSound = new Audio('/notification.mp3');
 
 const UserAvatar = ({name, isOnline, size = 'w-11 h-11'}: { name?: string, isOnline?: boolean, size?: string }) => {

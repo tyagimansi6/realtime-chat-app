@@ -3,8 +3,8 @@ import { useDropzone, type FileWithPath } from 'react-dropzone';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from "axios";
 import type { Message } from './types.tsx';
+import { apiBaseUrl } from "../../config/api";
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE || 'http://localhost:3000/chatApp';
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 interface FileUploadComponentProps {

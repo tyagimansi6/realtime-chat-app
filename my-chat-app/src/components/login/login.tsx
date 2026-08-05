@@ -4,8 +4,7 @@ import {Link, useNavigate} from "react-router-dom";
 import toast from "react-hot-toast";
 import { User, Lock, LogIn, Eye, EyeOff, Loader2 } from 'lucide-react';
 import {useUser} from "../../context/userContext.tsx";
-
-const apiBaseUrl = import.meta.env.VITE_API_BASE || 'http://localhost:3000/chatApp';
+import { apiBaseUrl } from "../../config/api";
 
 function Login() {
     const navigate = useNavigate();

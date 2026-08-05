@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import { useUser } from "./userContext.tsx";
+import { socketServerUrl } from "../config/api";
 
 const SocketContext = createContext<typeof Socket | null>(null);
 export const useSocket = () => useContext(SocketContext);
@@ -14,8 +15,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     useEffect(() => {
         if (!userId) return;
 
-        const apiBaseUrl = import.meta.env.VITE_API_BASE || 'http://localhost:3000/chatApp';
-        const newSocket = io(apiBaseUrl.replace(/\/chatApp\/?$/, ""), {
+        const newSocket = io(socketServerUrl, {
             path: "/chatApp/socket.io",
         });
 

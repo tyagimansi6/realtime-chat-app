@@ -3,6 +3,7 @@ import { Loader2, File as FileIcon, Image as ImageIcon, FileText as PdfIcon } fr
 import type { TypeMessage } from './types';
 import axios from "axios";
 import toast from "react-hot-toast";
+import { apiBaseUrl } from "../../config/api";
 
 type MessageProps = {
     message: TypeMessage;
@@ -32,7 +33,6 @@ const Message: React.FC<MessageProps> = ({
     const [urlError, setUrlError] = useState<boolean>(false);
 
     const tailClass = isLastInGroup ? (isCurrentUserSender ? 'rounded-br-none' : 'rounded-bl-none') : '';
-    const apiBaseUrl = import.meta.env.VITE_API_BASE || 'http://localhost:3000/chatApp';
 
     // Fixed getDownloadUrl function - now properly async
     const getDownloadUrl = async (fileKey: string): Promise<string> => {

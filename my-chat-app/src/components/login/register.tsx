@@ -3,8 +3,7 @@ import axios from 'axios';
 import {Link, useNavigate} from 'react-router-dom';
 import toast from "react-hot-toast";
 import { User, Mail, Lock, UserPlus, Eye, EyeOff, Loader2 } from 'lucide-react';
-
-const apiBaseUrl = import.meta.env.VITE_API_BASE || 'http://localhost:3000/chatApp';
+import { apiBaseUrl } from "../../config/api";
 
 function Register() {
     const navigate = useNavigate();

@@ -4,8 +4,7 @@ import toast from "react-hot-toast";
 import { Send, Loader2, Paperclip } from 'lucide-react';
 import type {Message, TypeChat} from "./types.tsx";
 import FileUploadComponent from "./fileUpload";
-
-const apiBaseUrl = import.meta.env.VITE_API_BASE || 'http://localhost:3000/chatApp';
+import { apiBaseUrl } from "../../config/api";
 
 type MessageInputProps = {
     chat: TypeChat | null;

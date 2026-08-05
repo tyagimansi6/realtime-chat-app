@@ -1,6 +1,7 @@
 import {createContext, type ReactNode, useContext, useEffect, useState,} from "react";
 import axios from "axios";
 import type { User as TypeUser } from "../components/chats/types.tsx";
+import { apiBaseUrl } from "../config/api";
 
 interface UserContextType {
     user: TypeUser | null;
@@ -15,8 +16,6 @@ const UserContext = createContext<UserContextType>({
     loading: true,
     refetchUser: () => {},
 });
-
-const apiBaseUrl = import.meta.env.VITE_API_BASE || 'http://localhost:3000/chatApp';
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<TypeUser | null>(null);
